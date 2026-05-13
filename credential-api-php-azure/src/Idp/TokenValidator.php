@@ -1,0 +1,5 @@
+<?php
+declare(strict_types=1);
+namespace CredentialApi\Idp;
+use CredentialApi\Config\Env; use CredentialApi\Errors\HttpError; use CredentialApi\Security\JwtVerifier; use CredentialApi\Types\AuthenticatedUser;
+final class TokenValidator { public function validate(string $token): AuthenticatedUser { $tenant=Env::required('AZURE_TENANT_ID'); $issuer=Env::get('AZURE_ALLOWED_ISSUER') ?: "https://login.microsoftonline.com/{$tenant}/v2.0"; $p=(new JwtVerifier("https://login.microsoftonline.com/{$tenant}/discovery/v2.0/keys"))->verify($token,$issuer,Env::required('AZURE_CLIENT_ID')); $sub=is_string($p['oid']??null)?$p['oid']:($p['sub']??null); if(!is_string($sub)||$sub==='')throw new HttpError(401,'Azure token does not contain sub or oid claim'); $roles=array_values(array_filter(is_array($p['roles']??null)?$p['roles']:[],'is_string')); $scope=is_string($p['scp']??null)?$p['scp']:''; $email=is_string($p['preferred_username']??null)?$p['preferred_username']:(is_string($p['email']??null)?$p['email']:null); return new AuthenticatedUser('azure',$sub,$email,is_string($p['name']??null)?$p['name']:null,$roles,array_values(array_filter(explode(' ',$scope))),$p); } }

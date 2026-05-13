@@ -1,0 +1,18 @@
+{
+  "name": "chrissaal/credential-api-php-azure",
+  "description": "Ejemplo PHP para Campus Digital Credential API 2.4.0 con Azure Entra ID",
+  "type": "project",
+  "require": {
+    "php": ">=8.2",
+    "ext-openssl": "*"
+  },
+  "scripts": {
+    "start": "php -S localhost:3000 -t public",
+    "test": "php tests/run.php"
+  },
+  "autoload": {
+    "psr-4": {
+      "CredentialApi\\": "src/"
+    }
+  }
+}

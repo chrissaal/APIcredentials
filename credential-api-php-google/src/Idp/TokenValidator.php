@@ -1,0 +1,5 @@
+<?php
+declare(strict_types=1);
+namespace CredentialApi\Idp;
+use CredentialApi\Config\Env; use CredentialApi\Errors\HttpError; use CredentialApi\Security\JwtVerifier; use CredentialApi\Types\AuthenticatedUser;
+final class TokenValidator { public function validate(string $token): AuthenticatedUser { $p=(new JwtVerifier('https://www.googleapis.com/oauth2/v3/certs'))->verify($token,['https://accounts.google.com','accounts.google.com'],Env::required('GOOGLE_CLIENT_ID')); $sub=$p['sub']??null; if(!is_string($sub)||$sub==='')throw new HttpError(401,'Google token does not contain sub claim'); $hd=Env::get('GOOGLE_ALLOWED_HOSTED_DOMAIN'); if($hd!==null&&$hd!==''&&($p['hd']??null)!==$hd)throw new HttpError(401,'Google token hosted domain is not allowed'); $scope=is_string($p['scope']??null)?$p['scope']:''; return new AuthenticatedUser('google',$sub,is_string($p['email']??null)?$p['email']:null,is_string($p['name']??null)?$p['name']:null,[],array_values(array_filter(explode(' ',$scope))),$p); } }
