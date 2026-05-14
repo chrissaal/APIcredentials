@@ -1,7 +1,7 @@
 {
-  "name": "credential-api-google",
+  "name": "credential-api-node-azure",
   "version": "1.0.0",
-  "description": "Ejemplo Node.js para Campus Digital Credential API 2.4.0 con Google IDP",
+  "description": "Ejemplo Node.js para Campus Digital Credential API 2.4.0 con Azure Entra ID",
   "type": "module",
   "main": "dist/server.js",
   "scripts": {

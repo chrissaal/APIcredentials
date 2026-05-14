@@ -4,8 +4,8 @@ Ejemplos separados por lenguaje e IDP para el contrato Campus Digital Credential
 
 ## Node.js
 
-- `credential-api-azure`: implementación Node.js/TypeScript con Azure Entra ID.
-- `credential-api-google`: implementación Node.js/TypeScript con Google IDP.
+- `credential-api-node-azure`: implementación Node.js/TypeScript con Azure Entra ID.
+- `credential-api-node-google`: implementación Node.js/TypeScript con Google IDP.
 
 ## PHP
 
